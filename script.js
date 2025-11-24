@@ -28,7 +28,7 @@ function operate(op, a, b) {
 }
 
 let num1 = '0';
-let num2 = '0';
+let num2 = '-1';
 let operator = '';
 let prevCalc = false;
 let firstDigit = true;
@@ -56,10 +56,13 @@ layout.forEach(row => {
         if (['/', 'x', '-', '+'].includes(key)) {
             newKey.classList.add('operator');
             newKey.addEventListener('click', () => {
-                if (num1 !== '0') {
-                    operator = `${newKey.textContent}`;
-                    console.log(operator);
+                console.log(num2);
+                if (num2 !== '-1') {
+                    const equalsBtn = document.querySelector('.equals');
+                    equalsBtn.click();
                 }
+                operator = `${newKey.textContent}`;
+
             })
         } else if (['='].includes(key)) {
             newKey.classList.add('equals');
@@ -71,7 +74,7 @@ layout.forEach(row => {
                     let calcNum = operate(operator, parseInt(num1), parseInt(num2));
                     display.textContent = `${calcNum}`;
                     num1 = `${calcNum}`;
-                    num2 = '0';
+                    num2 = '-1';
                     operator = '';
                     firstDigit = true;
                 }
@@ -81,7 +84,7 @@ layout.forEach(row => {
             newKey.addEventListener('click', () => {
                 display.textContent = `0`;
                 num1 = '0';
-                num2 = '0';
+                num2 = '-1';
                 operator = '';
                 prevCalc = false;
                 firstDigit = true;
@@ -97,7 +100,6 @@ layout.forEach(row => {
                         display.textContent += `${newKey.textContent}`
                     }
                     num1 = display.textContent;
-                    console.log(`num1: ${num1}`);
                 } else {
                     if (firstDigit) {
                         display.textContent = `${newKey.textContent}`;
@@ -106,7 +108,6 @@ layout.forEach(row => {
                         display.textContent += `${newKey.textContent}`
                     }
                     num2 = display.textContent;
-                    console.log(`num2: ${num2}`);
                 }
             })
         }

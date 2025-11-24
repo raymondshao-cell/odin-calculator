@@ -32,6 +32,7 @@ let num2 = '-1';
 let operator = '';
 let prevCalc = false;
 let firstDigit = true;
+let errorFlag = false;
 
 const layout = [
     ['7','8','9','Clear'],
@@ -56,7 +57,10 @@ layout.forEach(row => {
         if (['/', 'x', '-', '+'].includes(key)) {
             newKey.classList.add('operator');
             newKey.addEventListener('click', () => {
-                console.log(num2);
+                if (errorFlag) {
+                    const clearBtn = document.querySelector('.clear');
+                    clearBtn.click();
+                }
                 if (num2 !== '-1') {
                     const equalsBtn = document.querySelector('.equals');
                     equalsBtn.click();
@@ -69,6 +73,11 @@ layout.forEach(row => {
             newKey.addEventListener('click', () => {
                 console.log(operator);
                 if (operator !== '') {
+                    if (operator === '/' && num2 === '0') {
+                        display.textContent = 'CANNOT DIVIDE BY 0';
+                        errorFlag = true;
+                        return;
+                    }
                     console.log(num1+operator+num2);
                     prevCalc = true;
                     let calcNum = operate(operator, parseInt(num1), parseInt(num2));
@@ -88,11 +97,17 @@ layout.forEach(row => {
                 operator = '';
                 prevCalc = false;
                 firstDigit = true;
+                errorFlag = false;
             })
             
         } else {
             newKey.classList.add('digit');
             newKey.addEventListener('click', () => {
+                if (errorFlag) {
+                    const clearBtn = document.querySelector('.clear');
+                    clearBtn.click();
+                }
+
                 if (prevCalc === false && operator === '') {
                     if (display.textContent === '0') {
                         display.textContent = `${newKey.textContent}`;

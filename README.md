@@ -4,4 +4,4 @@ This is a capstone calculator project that follows the guidelines of the Odin Pr
 
 ## Credits
 
-This project was developed by Raymond Shao as part of the Odin Project's Foundations curriculum. This project included the use of Gemini for brainstorming methods to aid in the project's development.
+This project was developed by Raymond Shao as part of the Odin Project's Foundations curriculum. This project included the use of Google's Gemini AI for brainstorming methods to aid in the project's development.

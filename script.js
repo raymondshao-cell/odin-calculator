@@ -73,14 +73,12 @@ layout.forEach(row => {
         } else if (['='].includes(key)) {
             newKey.classList.add('equals');
             newKey.addEventListener('click', () => {
-                console.log(operator);
                 if (operator !== '') {
                     if (operator === '/' && num2 === '0') {
                         display.textContent = 'CANNOT DIVIDE BY 0';
                         errorFlag = true;
                         return;
                     }
-                    console.log(num1+operator+num2);
                     prevCalc = true;
                     let calcNum = operate(operator, parseInt(num1), parseInt(num2));
                     num1 = `${calcNum}`.substring(0,MAX_DIGITS);
@@ -112,7 +110,7 @@ layout.forEach(row => {
 
                 if (prevCalc === false && operator === '') {
                     if (num1.length < MAX_DIGITS) {
-                        if (display.textContent === '0') {
+                        if (parseInt(display.textContent) == 0) {
                             display.textContent = `${newKey.textContent}`;
                         } else {
                             display.textContent += `${newKey.textContent}`;
@@ -121,7 +119,9 @@ layout.forEach(row => {
                     num1 = display.textContent;
                 } else {
                     if (num2.length < MAX_DIGITS) {
-                        if (firstDigit) {
+                        if (parseInt(num2) <= 0 && parseInt(newKey.textContent) === 0) {
+                            display.textContent = '0';
+                        } else if (firstDigit) {
                             display.textContent = `${newKey.textContent}`;
                             firstDigit = false;
                         } else {

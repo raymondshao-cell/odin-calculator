@@ -35,6 +35,7 @@ let operator = '';
 let prevCalc = false;
 let firstDigit = true;
 let errorFlag = false;
+let num2Entered = false;
 
 const layout = [
     ['7','8','9','Clear'],
@@ -79,6 +80,12 @@ layout.forEach(row => {
                         errorFlag = true;
                         return;
                     }
+
+                    if (!num2Entered) {
+                        display.textContent = 'PLEASE ENTER THE SECOND NUMBER';
+                        errorFlag = true;
+                        return;
+                    }
                     prevCalc = true;
                     let calcNum = operate(operator, parseInt(num1), parseInt(num2));
                     num1 = `${calcNum}`.substring(0,MAX_DIGITS);
@@ -86,6 +93,7 @@ layout.forEach(row => {
                     num2 = '-1';
                     operator = '';
                     firstDigit = true;
+                    num2Entered = false;
                 }
             })
         } else if (['Clear'].includes(key)) {
@@ -98,6 +106,7 @@ layout.forEach(row => {
                 prevCalc = false;
                 firstDigit = true;
                 errorFlag = false;
+                num2Entered = false;
             })
             
         } else {
@@ -128,7 +137,7 @@ layout.forEach(row => {
                             display.textContent += `${newKey.textContent}`;
                         }
                     }
-                    
+                    num2Entered = true;
                     num2 = display.textContent;
                 }
             })

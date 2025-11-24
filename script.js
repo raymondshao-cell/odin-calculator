@@ -1,3 +1,4 @@
+
 function add(a,b) {
     return a+b;
 }
@@ -11,7 +12,6 @@ function multiply(a,b) {
 }
 
 function divide(a,b) {
-    // Include divide by 0 error message
     return a/b;
 }
 
@@ -26,6 +26,8 @@ function operate(op, a, b) {
         return divide(a,b);
     }
 }
+
+const MAX_DIGITS = 20;
 
 let num1 = '0';
 let num2 = '-1';
@@ -81,8 +83,8 @@ layout.forEach(row => {
                     console.log(num1+operator+num2);
                     prevCalc = true;
                     let calcNum = operate(operator, parseInt(num1), parseInt(num2));
-                    display.textContent = `${calcNum}`;
-                    num1 = `${calcNum}`;
+                    num1 = `${calcNum}`.substring(0,MAX_DIGITS);
+                    display.textContent = num1;
                     num2 = '-1';
                     operator = '';
                     firstDigit = true;
@@ -109,19 +111,24 @@ layout.forEach(row => {
                 }
 
                 if (prevCalc === false && operator === '') {
-                    if (display.textContent === '0') {
-                        display.textContent = `${newKey.textContent}`;
-                    } else {
-                        display.textContent += `${newKey.textContent}`
+                    if (num1.length < MAX_DIGITS) {
+                        if (display.textContent === '0') {
+                            display.textContent = `${newKey.textContent}`;
+                        } else {
+                            display.textContent += `${newKey.textContent}`;
+                        }
                     }
                     num1 = display.textContent;
                 } else {
-                    if (firstDigit) {
-                        display.textContent = `${newKey.textContent}`;
-                        firstDigit = false;
-                    } else {
-                        display.textContent += `${newKey.textContent}`
+                    if (num2.length < MAX_DIGITS) {
+                        if (firstDigit) {
+                            display.textContent = `${newKey.textContent}`;
+                            firstDigit = false;
+                        } else {
+                            display.textContent += `${newKey.textContent}`;
+                        }
                     }
+                    
                     num2 = display.textContent;
                 }
             })

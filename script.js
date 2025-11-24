@@ -20,7 +20,7 @@ function operate(operator, a, b) {
         return add(a, b);
     } else if (operator === "-") {
         return subtract(a,b);
-    } else if (operator === "*") {
+    } else if (operator === "x") {
         return multiply(a,b);
     }else if (operator === "/") {
         return divide(a,b);
@@ -32,11 +32,10 @@ let num2 = 5;
 let operator = "";
 
 const layout = [
-    ['7','8','9'],
-    ['4','5','6'],
-    ['1','2','3'],
-    ['0','/','x'],
-    ['+','-','=']
+    ['7','8','9','Clear'],
+    ['4','5','6','/'],
+    ['1','2','3','x'],
+    ['0','+','-','='],
 ]
 
 const keys = document.querySelector('.keys');
@@ -52,15 +51,20 @@ layout.forEach(row => {
         const newKey = document.createElement('button');
         newKey.textContent = key;
 
-        if (['/', '*', '-', '+', '='].includes(key)) {
+        if (['/', 'x', '-', '+', '='].includes(key)) {
             newKey.classList.add('operator');
+        } else if (['Clear'].includes(key)) {
+            newKey.classList.add('clear');
+            newKey.addEventListener('click', () => {
+                display.textContent = `0`;
+            })
+            
         } else {
             newKey.classList.add('digit');
+            newKey.addEventListener('click', () => {
+                display.textContent = `${newKey.textContent}`;
+            })
         }
-
-        // if (newKey.classList.contains('digit')) {
-        //     display.textContent(`${newKey.textContent}`);
-        // }
 
         rowContainer.appendChild(newKey);
     })

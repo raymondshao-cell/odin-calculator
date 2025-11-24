@@ -9,7 +9,7 @@ html, body {
     align-items: stretch;
     padding: 16px;
     box-sizing: border-box;
-    padding: 20%;
+    /* padding: 20%; */
     height: 100vh;
     border: 3px solid black;
 }
@@ -36,10 +36,11 @@ html, body {
 .keys {
     border: 3px solid black;
     flex: 0 0 70%;
+    max-width: 500px;
 }
 
 button {
-    width: 33%;
+    width: 25%;
     aspect-ratio: 1/1;
-    font-size: 2em;
+    font-size: 1.5em;
 }

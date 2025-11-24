@@ -31,7 +31,38 @@ let num1 = 3;
 let num2 = 5;
 let operator = "";
 
-console.log(operate("+",num1,num2));
-console.log(operate("-",num1,num2));
-console.log(operate("*",num1,num2));
-console.log(operate("/",num1,num2));
+const layout = [
+    ['7','8','9'],
+    ['4','5','6'],
+    ['1','2','3'],
+    ['0','/','x'],
+    ['+','-','=']
+]
+
+const keys = document.querySelector('.keys');
+const display = document.querySelector('.display');
+
+display.textContent = '0';
+
+layout.forEach(row => {
+    const rowContainer = document.createElement('div');
+    rowContainer.classList.add('calcRow');
+
+    row.forEach(key => {
+        const newKey = document.createElement('button');
+        newKey.textContent = key;
+
+        if (['/', '*', '-', '+', '='].includes(key)) {
+            newKey.classList.add('operator');
+        } else {
+            newKey.classList.add('digit');
+        }
+
+        // if (newKey.classList.contains('digit')) {
+        //     display.textContent(`${newKey.textContent}`);
+        // }
+
+        rowContainer.appendChild(newKey);
+    })
+    keys.appendChild(rowContainer);
+})

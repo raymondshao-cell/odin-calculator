@@ -1,0 +1,45 @@
+html, body {
+    height: 100%;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    padding: 16px;
+    box-sizing: border-box;
+    padding: 20%;
+    height: 100vh;
+    border: 3px solid black;
+}
+
+.display {
+    font-size: 2em;
+    text-align: right;
+    border: 3px solid black;
+    box-sizing: border-box;
+    height: 20%;
+    padding: 5%;
+
+}
+
+.keysContainer {
+    border: 3px solid black;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.keys {
+    border: 3px solid black;
+    flex: 0 0 70%;
+}
+
+button {
+    width: 33%;
+    aspect-ratio: 1/1;
+    font-size: 2em;
+}

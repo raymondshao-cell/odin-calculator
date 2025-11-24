@@ -15,14 +15,14 @@ function divide(a,b) {
     return a/b;
 }
 
-function operate(operator, a, b) {
-    if (operator === '+') {
+function operate(op, a, b) {
+    if (op === '+') {
         return add(a, b);
-    } else if (operator === '-') {
+    } else if (op === '-') {
         return subtract(a,b);
-    } else if (operator === 'x') {
+    } else if (op === 'x') {
         return multiply(a,b);
-    }else if (operator === '/') {
+    }else if (op === '/') {
         return divide(a,b);
     }
 }
@@ -62,10 +62,14 @@ layout.forEach(row => {
         } else if (['='].includes(key)) {
             newKey.classList.add('equals');
             newKey.addEventListener('click', () => {
-                display.textContent = `0`;
-                num1 = 0;
-                num2 = 0;
-                operator = '';
+                if (operator !== '') {
+                    let calcNum = operate(operator, num1, num2);
+                    display.textContent = `${calcNum}`;
+                    num1 = calcNum;
+                    num2 = 0;
+                    operator = '';
+                    console.log(`${num1} ${operator} ${num2}`);
+                }
             })
         } else if (['Clear'].includes(key)) {
             newKey.classList.add('clear');
@@ -80,7 +84,7 @@ layout.forEach(row => {
             newKey.classList.add('digit');
             newKey.addEventListener('click', () => {
                 display.textContent = `${newKey.textContent}`;
-                if (operator === '') {
+                if (operator === '' && num1 === 0) {
                     num1 = parseInt(newKey.textContent);
                     console.log(`num1: ${num1}`);
                 } else {

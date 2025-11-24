@@ -27,9 +27,11 @@ function operate(op, a, b) {
     }
 }
 
-let num1 = 0;
-let num2 = 0;
+let num1 = '0';
+let num2 = '0';
 let operator = '';
+let prevCalc = false;
+let firstDigit = true;
 
 const layout = [
     ['7','8','9','Clear'],
@@ -54,7 +56,7 @@ layout.forEach(row => {
         if (['/', 'x', '-', '+'].includes(key)) {
             newKey.classList.add('operator');
             newKey.addEventListener('click', () => {
-                if (num1 >= 0) {
+                if (num1 !== '0') {
                     operator = `${newKey.textContent}`;
                     console.log(operator);
                 }
@@ -62,33 +64,48 @@ layout.forEach(row => {
         } else if (['='].includes(key)) {
             newKey.classList.add('equals');
             newKey.addEventListener('click', () => {
+                console.log(operator);
                 if (operator !== '') {
-                    let calcNum = operate(operator, num1, num2);
+                    console.log(num1+operator+num2);
+                    prevCalc = true;
+                    let calcNum = operate(operator, parseInt(num1), parseInt(num2));
                     display.textContent = `${calcNum}`;
-                    num1 = calcNum;
-                    num2 = 0;
+                    num1 = `${calcNum}`;
+                    num2 = '0';
                     operator = '';
-                    console.log(`${num1} ${operator} ${num2}`);
+                    firstDigit = true;
                 }
             })
         } else if (['Clear'].includes(key)) {
             newKey.classList.add('clear');
             newKey.addEventListener('click', () => {
                 display.textContent = `0`;
-                num1 = 0;
-                num2 = 0;
+                num1 = '0';
+                num2 = '0';
                 operator = '';
+                prevCalc = false;
+                firstDigit = true;
             })
             
         } else {
             newKey.classList.add('digit');
             newKey.addEventListener('click', () => {
-                display.textContent = `${newKey.textContent}`;
-                if (operator === '' && num1 === 0) {
-                    num1 = parseInt(newKey.textContent);
+                if (prevCalc === false && operator === '') {
+                    if (display.textContent === '0') {
+                        display.textContent = `${newKey.textContent}`;
+                    } else {
+                        display.textContent += `${newKey.textContent}`
+                    }
+                    num1 = display.textContent;
                     console.log(`num1: ${num1}`);
                 } else {
-                    num2 = parseInt(newKey.textContent);
+                    if (firstDigit) {
+                        display.textContent = `${newKey.textContent}`;
+                        firstDigit = false;
+                    } else {
+                        display.textContent += `${newKey.textContent}`
+                    }
+                    num2 = display.textContent;
                     console.log(`num2: ${num2}`);
                 }
             })

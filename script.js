@@ -36,6 +36,7 @@ let prevCalc = false;
 let firstDigit = true;
 let errorFlag = false;
 let num2Entered = false;
+const keyPrefix = 'key-';
 
 const layout = [
     ['7','8','9','Clear'],
@@ -43,6 +44,29 @@ const layout = [
     ['1','2','3','x'],
     ['0','+','-','='],
 ]
+
+const keyDict = {
+    '/':'divide',
+    'x':'times',
+    '+':'plus',
+    '-':'minus',
+    '1':'one',
+    '2':'two',
+    '3':'three',
+    '4':'four',
+    '5':'five',
+    '6':'six',
+    '7':'seven',
+    '8':'eight',
+    '9':'nine',
+    '0':'zero',
+    'Enter':'equals'
+}
+
+const availKeys = ['7','8','9','Enter',
+    '4','5','6','/',
+    '1','2','3','x',
+    '0','+','-']
 
 const keys = document.querySelector('.keys');
 const display = document.querySelector('.display');
@@ -56,9 +80,11 @@ layout.forEach(row => {
     row.forEach(key => {
         const newKey = document.createElement('button');
         newKey.textContent = key;
+        newKey.id = `${keyPrefix}${keyDict[key]}`;
 
         if (['/', 'x', '-', '+'].includes(key)) {
             newKey.classList.add('operator');
+            
             newKey.addEventListener('click', () => {
                 if (errorFlag) {
                     const clearBtn = document.querySelector('.clear');
@@ -73,6 +99,7 @@ layout.forEach(row => {
             })
         } else if (['='].includes(key)) {
             newKey.classList.add('equals');
+            newKey.id = `${keyPrefix}${keyDict['Enter']}`;
             newKey.addEventListener('click', () => {
                 if (operator !== '') {
                     if (operator === '/' && num2 === '0') {
@@ -87,7 +114,7 @@ layout.forEach(row => {
                         return;
                     }
                     prevCalc = true;
-                    let calcNum = operate(operator, parseInt(num1), parseInt(num2));
+                    let calcNum = operate(operator, parseFloat(num1), parseFloat(num2));
                     num1 = `${calcNum}`.substring(0,MAX_DIGITS);
                     display.textContent = num1;
                     num2 = '-1';
@@ -119,7 +146,7 @@ layout.forEach(row => {
 
                 if (prevCalc === false && operator === '') {
                     if (num1.length < MAX_DIGITS) {
-                        if (parseInt(display.textContent) == 0) {
+                        if (parseFloat(display.textContent) == 0) {
                             display.textContent = `${newKey.textContent}`;
                         } else {
                             display.textContent += `${newKey.textContent}`;
@@ -128,7 +155,7 @@ layout.forEach(row => {
                     num1 = display.textContent;
                 } else {
                     if (num2.length < MAX_DIGITS) {
-                        if (parseInt(num2) <= 0 && parseInt(newKey.textContent) === 0) {
+                        if (parseFloat(num2) <= 0 && parseFloat(newKey.textContent) == 0) {
                             display.textContent = '0';
                         } else if (firstDigit) {
                             display.textContent = `${newKey.textContent}`;
@@ -147,3 +174,13 @@ layout.forEach(row => {
     })
     keys.appendChild(rowContainer);
 })
+
+document.addEventListener('keydown', function(event) {
+    const keyVal = event.key;
+    console.log(keyVal);
+
+    if (availKeys.includes(keyVal)) {
+        let btnToClick = document.querySelector(`#${keyPrefix+keyDict[keyVal]}`);
+        btnToClick.click();
+    }
+});

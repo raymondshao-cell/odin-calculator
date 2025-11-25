@@ -62,7 +62,8 @@ const keyDict = {
     '8':'eight',
     '9':'nine',
     '0':'zero',
-    'Enter':'equals'
+    'Enter':'equals',
+    'Backspace':'Backspace'
 }
 
 const availKeys = ['7','8','9','Enter',

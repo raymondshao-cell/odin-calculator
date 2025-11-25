@@ -36,6 +36,7 @@ let prevCalc = false;
 let firstDigit = true;
 let errorFlag = false;
 let num2Entered = false;
+let currNum = 1; //This can be 1 for num1 or 2 for num2
 const keyPrefix = 'key-';
 
 const layout = [
@@ -43,6 +44,7 @@ const layout = [
     ['4','5','6','/'],
     ['1','2','3','x'],
     ['0','+','-','='],
+    ['Backspace']
 ]
 
 const keyDict = {
@@ -66,7 +68,7 @@ const keyDict = {
 const availKeys = ['7','8','9','Enter',
     '4','5','6','/',
     '1','2','3','x',
-    '0','+','-']
+    '0','+','-','Backspace']
 
 const keys = document.querySelector('.keys');
 const display = document.querySelector('.display');
@@ -101,6 +103,7 @@ layout.forEach(row => {
             newKey.classList.add('equals');
             newKey.id = `${keyPrefix}${keyDict['Enter']}`;
             newKey.addEventListener('click', () => {
+
                 if (operator !== '') {
                     if (operator === '/' && num2 === '0') {
                         display.textContent = 'CANNOT DIVIDE BY 0';
@@ -113,6 +116,7 @@ layout.forEach(row => {
                         errorFlag = true;
                         return;
                     }
+
                     prevCalc = true;
                     let calcNum = operate(operator, parseFloat(num1), parseFloat(num2));
                     num1 = `${calcNum}`.substring(0,MAX_DIGITS);
@@ -121,6 +125,7 @@ layout.forEach(row => {
                     operator = '';
                     firstDigit = true;
                     num2Entered = false;
+                    currNum = 1;
                 }
             })
         } else if (['Clear'].includes(key)) {
@@ -134,9 +139,31 @@ layout.forEach(row => {
                 firstDigit = true;
                 errorFlag = false;
                 num2Entered = false;
+                currNum = 1;
             })
             
-        } else {
+        } else if (['Backspace'].includes(key)){
+            newKey.classList.add('Backspace');
+
+            newKey.addEventListener('click', () => {
+                let currDisplay = display.textContent;
+                if (currDisplay.length == 1) {
+                    currDisplay = '0';
+                } else {
+                    currDisplay = currDisplay.slice(0,-1);
+                }
+
+                display.textContent = currDisplay;
+                
+                if (currNum === 1) {
+                    num1 = currDisplay;
+                } else if (currNum === 2) {
+                    num2 = currDisplay;
+                }
+            })
+            
+        }
+        else {
             newKey.classList.add('digit');
             newKey.addEventListener('click', () => {
                 if (errorFlag) {
@@ -145,6 +172,7 @@ layout.forEach(row => {
                 }
 
                 if (prevCalc === false && operator === '') {
+                    currNum = 1;
                     if (num1.length < MAX_DIGITS) {
                         if (parseFloat(display.textContent) == 0) {
                             display.textContent = `${newKey.textContent}`;
@@ -154,6 +182,7 @@ layout.forEach(row => {
                     }
                     num1 = display.textContent;
                 } else {
+                    currNum = 2;
                     if (num2.length < MAX_DIGITS) {
                         if (parseFloat(num2) <= 0 && parseFloat(newKey.textContent) == 0) {
                             display.textContent = '0';
@@ -176,6 +205,7 @@ layout.forEach(row => {
 })
 
 document.addEventListener('keydown', function(event) {
+    // Add keyboard functionality for backspace
     const keyVal = event.key;
     console.log(keyVal);
 

@@ -44,7 +44,7 @@ const layout = [
     ['4','5','6','/'],
     ['1','2','3','x'],
     ['0','+','-','='],
-    ['Backspace']
+    ['Backspace','.']
 ]
 
 const keyDict = {
@@ -63,13 +63,14 @@ const keyDict = {
     '9':'nine',
     '0':'zero',
     'Enter':'equals',
-    'Backspace':'Backspace'
+    'Backspace':'Backspace',
+    '.':'decimal'
 }
 
 const availKeys = ['7','8','9','Enter',
     '4','5','6','/',
     '1','2','3','x',
-    '0','+','-','Backspace']
+    '0','+','-','Backspace','.']
 
 const keys = document.querySelector('.keys');
 const display = document.querySelector('.display');
@@ -162,9 +163,25 @@ layout.forEach(row => {
                     num2 = currDisplay;
                 }
             })
-            
-        }
-        else {
+        } else if (['.'].includes(key)) {
+            newKey.classList.add('decimal');
+            newKey.id = `${keyPrefix}${keyDict['.']}`;
+            newKey.addEventListener('click', () => {
+                let currDisplay = display.textContent;
+                if (!currDisplay.includes(key)) {
+                    currDisplay += key;
+                    display.textContent = currDisplay;
+                    if (currNum === 1) {
+                        num1 = currDisplay;
+                        console.log(`num1 is ${num1}`);
+                    } else if (currNum === 2) {
+                        num2 = currDisplay;
+                        console.log(`num2 is ${num1}`)
+                    }
+                }
+            })
+
+        } else {
             newKey.classList.add('digit');
             newKey.addEventListener('click', () => {
                 if (errorFlag) {
@@ -175,9 +192,11 @@ layout.forEach(row => {
                 if (prevCalc === false && operator === '') {
                     currNum = 1;
                     if (num1.length < MAX_DIGITS) {
-                        if (parseFloat(display.textContent) == 0) {
+                        if (parseFloat(display.textContent) == 0 && (!display.textContent.includes('.'))) {
+                            console.log('Here');
                             display.textContent = `${newKey.textContent}`;
                         } else {
+                            console.log('Here2');
                             display.textContent += `${newKey.textContent}`;
                         }
                     }
@@ -185,7 +204,7 @@ layout.forEach(row => {
                 } else {
                     currNum = 2;
                     if (num2.length < MAX_DIGITS) {
-                        if (parseFloat(num2) <= 0 && parseFloat(newKey.textContent) == 0) {
+                        if (parseFloat(num2) <= 0 && parseFloat(newKey.textContent) == 0 && (!display.textContent.includes('.'))) {
                             display.textContent = '0';
                         } else if (firstDigit) {
                             display.textContent = `${newKey.textContent}`;

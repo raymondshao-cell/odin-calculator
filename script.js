@@ -173,10 +173,8 @@ layout.forEach(row => {
                     display.textContent = currDisplay;
                     if (currNum === 1) {
                         num1 = currDisplay;
-                        console.log(`num1 is ${num1}`);
                     } else if (currNum === 2) {
                         num2 = currDisplay;
-                        console.log(`num2 is ${num1}`)
                     }
                 }
             })
@@ -193,10 +191,8 @@ layout.forEach(row => {
                     currNum = 1;
                     if (num1.length < MAX_DIGITS) {
                         if (parseFloat(display.textContent) == 0 && (!display.textContent.includes('.'))) {
-                            console.log('Here');
                             display.textContent = `${newKey.textContent}`;
                         } else {
-                            console.log('Here2');
                             display.textContent += `${newKey.textContent}`;
                         }
                     }
@@ -227,7 +223,6 @@ layout.forEach(row => {
 document.addEventListener('keydown', function(event) {
     // Add keyboard functionality for backspace
     const keyVal = event.key;
-    console.log(keyVal);
 
     if (availKeys.includes(keyVal)) {
         let btnToClick = document.querySelector(`#${keyPrefix+keyDict[keyVal]}`);
